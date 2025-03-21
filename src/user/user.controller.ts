@@ -1,8 +1,8 @@
-import { Controller, Post, Put } from '@nestjs/common';
+import { Controller, Get, Post, Put } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { Body } from '@nestjs/common';
-import { CredentialsRegisterResDTO, UserReqDto } from './user-dto';
+import { CredentialsRegisterResDTO, UserReqDto, UserResDto } from './user-dto';
 import { ErrorResponse } from 'src/common/responses/errorResponse';
 import { OTPService } from './OTP/otp.service';
 import {
@@ -117,4 +117,5 @@ export class UserController {
   async ResetPassword(@Body() resetPassData: ResetPassReqDTO) {
     return this.otpService.resetPassword(resetPassData);
   }
+
 }

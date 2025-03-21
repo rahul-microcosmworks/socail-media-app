@@ -99,11 +99,10 @@ export class OTPService {
     verifyAccountData: VerifyAccountReqDTO,
   ): Promise<LoginResDto> {
     const { OTP, firstName, lastName, password, email } = verifyAccountData;
-
     // verify user 1st
     let existingUser = await this.userRepo.findOne({
       where: { email: email, isDeleted: false },
-      relations: ['enterprise'],
+      // relations: ['enterprise'],
     });
 
     if (!existingUser) {

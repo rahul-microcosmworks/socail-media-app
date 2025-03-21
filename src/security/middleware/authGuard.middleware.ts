@@ -43,10 +43,10 @@ export class AuthGuard implements CanActivate {
         where: { accessToken: authorization },
         relations: [
           'user',
-          'user.enterprise',
+          // 'user.enterprise',
           'user.roles.permissions',
-          'user.selectedQuestTypes',
-          'user.department',
+          // 'user.selectedQuestTypes',
+          // 'user.department',
         ],
       });
 

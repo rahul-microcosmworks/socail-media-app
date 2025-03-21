@@ -10,6 +10,10 @@ import {
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
 import { AccessTokenEntity } from './accessToken.entity';
+import { PostEntity } from '../post-entity/post.entity';
+import { ReactionEntity } from '../post-entity/reaction.entity';
+// import { CommentEntity } from '../post-entity/comment.entity';
+// import { ReactionEntity } from '../post-entity/reaction.entity';
 
 export const DEFAULT_AVATAR_URL =
   'https://microcosmworkspoc.s3.us-east-1.amazonaws.com/c208e193-31f3-4ddc-9f95-65fe209b72f5-da7ed7b0-5f66-4f97-a610-51100d3b9fd2%20%281%29.jpg';
@@ -27,18 +31,22 @@ export class UserEntity {
   @Column({ nullable: true }) // because on register there is no name provided by user until verify
   lastName: string;
 
-  @Column({ default: DEFAULT_AVATAR_URL })
-  avatar: string;
-
   @IsEmail()
   @Column({ nullable: false })
   email: string;
-
+  
   @Column({ default: null })
   password: string;
-
+  
+  @ManyToMany(() => RoleEntity, { eager: true })
+  @JoinTable()
+  roles: RoleEntity[];
+  
   @Column({ default: null })
   googleId: string;
+  
+  @Column({ default: DEFAULT_AVATAR_URL })
+  avatar: string;
 
   @Column({ default: false })
   isAccountVerified: boolean;
@@ -49,16 +57,21 @@ export class UserEntity {
   @Column({ default: null, nullable: true })
   designation: string;
 
-  @CreateDateColumn()
-  joinedAt: Date;
-
   @Column({ type: 'boolean', default: false, nullable: false })
   isDeleted: boolean;
 
-  @ManyToMany(() => RoleEntity, { eager: true })
-  @JoinTable()
-  roles: RoleEntity[];
+  @CreateDateColumn()
+  joinedAt: Date;
 
   @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user)
   accessToken: AccessTokenEntity[];
+
+  @OneToMany(() => PostEntity, (post) => post.user)
+  posts: PostEntity[];
+  
+  @OneToMany(() => ReactionEntity, (reaction) => reaction.user)
+  reactions: ReactionEntity[];
+  
+    // @OneToMany(() => CommentEntity, (comment) => comment.user)
+    // comments: CommentEntity[];
 }

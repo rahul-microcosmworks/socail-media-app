@@ -21,6 +21,7 @@ import { ThirdPartyModule } from './third-party/third-party.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { PostModule } from './post/post.module';
 import { ReactionModule } from './post/reaction/reaction.module';
+import { FriendRequestModule } from './friendRequest/friendRequest.module';
 @Module({
   imports: [
     NestConfigModule.forRoot({
@@ -38,6 +39,7 @@ import { ReactionModule } from './post/reaction/reaction.module';
     UserModule,
     PostModule,
     ReactionModule,
+    FriendRequestModule,
     SecurityModule,
     LoggerModule,
     FilterModule,

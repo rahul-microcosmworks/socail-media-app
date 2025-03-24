@@ -12,6 +12,8 @@ import { RoleEntity } from './role.entity';
 import { AccessTokenEntity } from './accessToken.entity';
 import { PostEntity } from '../post-entity/post.entity';
 import { ReactionEntity } from '../post-entity/reaction.entity';
+import { FriendRequestEntity } from '../friend-entity/friendRequest.entity';
+import { FriendRequestService } from 'src/friendRequest/friendRequest.service';
 // import { CommentEntity } from '../post-entity/comment.entity';
 // import { ReactionEntity } from '../post-entity/reaction.entity';
 
@@ -74,4 +76,10 @@ export class UserEntity {
   
     // @OneToMany(() => CommentEntity, (comment) => comment.user)
     // comments: CommentEntity[];
+
+    @OneToMany(() => FriendRequestEntity, (friendRequest) => friendRequest.sender)
+    sentRequests: FriendRequestEntity[];
+    
+    @OneToMany(() => FriendRequestEntity, (friendRequest) => friendRequest.receiver)
+    receivedRequests: FriendRequestEntity[];
 }

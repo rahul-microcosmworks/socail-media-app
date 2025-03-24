@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, UploadedFiles, Body, Request, UseGuards } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFiles, Body, Request, UseGuards, Get, Delete, Param } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { getMulterMediaOptions} from '../utils/multer.utils';
 import {AllowedMixEntensions} from '../utils/allowedExtensions.utils';
@@ -15,16 +15,30 @@ export class PostController {
   @UseInterceptors(
     FilesInterceptor('media', 5, getMulterMediaOptions({ fileExtensions: AllowedMixEntensions }))
   )
+
+  
   async createPost(
     @Request() req,
     @Body() createPostDto: CreatePostDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    console.log('User making request:', req.user); // Debugging
-
-    if (!req.user || !req.user.id) {
-      throw new Error('Unauthorized: User ID not found in request');
+    //   console.log('User making request:', req.user); // Debugging
+    
+    //   if (!req.user || !req.user.id) {
+      //     throw new Error('Unauthorized: User ID not found in request');
+      //   }
+      return this.postService.createPost(req.user.id, createPostDto, files);
     }
-    return this.postService.createPost(req.user.id, createPostDto, files);
+    
+    @Get()
+    @UseGuards(AuthGuard)
+    async getUserPosts(@Request() req) {
+      return this.postService.getUserPostsWithReactions(req.user.id);
+    }
+
+    @Delete(':id')
+    @UseGuards(AuthGuard)
+    async deletePost(@Request() req, @Param('id') postId: string) {
+      return this.postService.deletePost(Number(postId));
+    }
   }
-}
